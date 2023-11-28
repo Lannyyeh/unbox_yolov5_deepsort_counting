@@ -8,18 +8,28 @@ if __name__ == '__main__':
 
     # 根据视频尺寸，填充一个polygon，供撞线计算使用
     mask_image_temp = np.zeros((1080, 1920), dtype=np.uint8)
+    
 
     # 初始化2个撞线polygon
-    list_pts_blue = [[204, 305], [227, 431], [605, 522], [1101, 464], [1900, 601], [1902, 495], [1125, 379], [604, 437],
+    list_pts_blue = [[204, 305], [227, 431], 
+                    [605, 522], [1101, 464], [1900, 601], [1902, 495], [1125, 379], [604, 437],
                      [299, 375], [267, 289]]
+    
+                      
     ndarray_pts_blue = np.array(list_pts_blue, np.int32)
     polygon_blue_value_1 = cv2.fillPoly(mask_image_temp, [ndarray_pts_blue], color=1)
-    polygon_blue_value_1 = polygon_blue_value_1[:, :, np.newaxis]
+    polygon_blue_value_1 = polygon_blue_value_1[:, :, np.newaxis] 
+    # add one more demension, maybe for drawing?
+    
+    # comment by lanny
+    # cv2.fillPoly可以就理解成塗色，會把上面list中的點都連起來；左上角是00點，x往右增加，y往下增加。
 
     # 填充第二个polygon
     mask_image_temp = np.zeros((1080, 1920), dtype=np.uint8)
-    list_pts_yellow = [[181, 305], [207, 442], [603, 544], [1107, 485], [1898, 625], [1893, 701], [1101, 568],
+    list_pts_yellow = [[181, 305], [207, 442], 
+                       [603, 544], [1107, 485], [1898, 625], [1893, 701], [1101, 568],
                        [594, 637], [118, 483], [109, 303]]
+                    
     ndarray_pts_yellow = np.array(list_pts_yellow, np.int32)
     polygon_yellow_value_2 = cv2.fillPoly(mask_image_temp, [ndarray_pts_yellow], color=2)
     polygon_yellow_value_2 = polygon_yellow_value_2[:, :, np.newaxis]
