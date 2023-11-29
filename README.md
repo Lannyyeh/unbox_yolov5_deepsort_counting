@@ -26,7 +26,7 @@
     - 測試資源目前還是原本的行人影片
 
     ``` bash
-    python ClassroomTest.py
+    python CountPeople.py
     ```
 
 ## 對原版的修改記錄
