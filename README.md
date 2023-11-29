@@ -1,91 +1,35 @@
-# yolov5 deepsort 行人 车辆 跟踪 检测 计数
+# 碩一課程Cyber-Physics System 的專案
 
-- 实现了 出/入 分别计数。
-- 显示检测类别。
-- 默认是 南/北 方向检测，若要检测不同位置和方向，可在 main.py 文件第13行和21行，修改2个polygon的点。
-- 默认检测类别：行人、自行车、小汽车、摩托车、公交车、卡车。
-- 检测类别可在 detector.py 文件第60行修改。
+## 簡介
 
+- 功能可能比較簡陋。
+- 我們小組關於物聯網的大作業，是打算做一個攝像頭人物檢測的專案。
+- 攝像頭那邊應該要是一個簡單的IOT設備，應該要是無法進行太複雜的運算，只能將獲取到的信息傳輸到計算中心進行處理，再接收一個結果，這樣簡單的設備；但是，由於我們沒有這種嵌入式設備，所以目前client和server用的都是普通pc，對於client來說是性能是冗餘的。
+- 總之，傳輸這邊最後交由到另外兩位大佬負責，我負責的部分是server端的人物識別和追蹤。輸入會是根據rtmp協議獲取的圖像，code的功能只要從 `cv2.VideoCapture()` 開始就可以了。模型使用的是fork過來的原版，只有在具體功能上做一些修改，以及可能因為版本較舊造成的error進行一點點處理，改的不多，基本能直接跑通。
 
-### 视频
+## 環境配置和流程
 
-bilibili
+1. 首先需要裝CUDA和Cudnn，以及pytorch，我這邊最後使用的cuda 12.0和pytorch 11.8
+2. 環境配置使用的是conda，可以直接使用[配置文件](./environment.yml)
 
-[![bilibili](https://github.com/dyh/unbox_yolov5_deepsort_counting/blob/main/cover.jpg?raw=true)](https://www.bilibili.com/video/BV14z4y127XX/ "bilibili")
-
-
-## 运行环境
-
-- python 3.6+，pip 20+
-- pytorch
-- pip install -r requirements.txt
-
-
-## 如何运行
-
-1. 下载代码
-
-    ```
-    $ git clone https://github.com/dyh/unbox_yolov5_deepsort_counting.git
-    ```
-   
-   > 因此repo包含weights及mp4等文件，若 git clone 速度慢，可直接下载zip文件：https://github.com/dyh/unbox_yolov5_deepsort_counting/archive/main.zip
-   
-2. 进入目录
-
-    ```
-    $ cd unbox_yolov5_deepsort_counting
+    ``` bash
+    conda env create -f environment.yml --name new_env_name
     ```
 
-3. 创建 python 虚拟环境
+3. 原本作者實現的是檢測經典行人影片上行和下行統計
 
-    ```
-    $ python3 -m venv venv
-    ```
-
-4. 激活虚拟环境
-
-    ```
-    $ source venv/bin/activate
-    ```
-   
-5. 升级pip
-
-    ```
-    $ python -m pip install --upgrade pip
-    ```
-
-6. 安装pytorch
-
-    > 根据你的操作系统、安装工具以及CUDA版本，在 https://pytorch.org/get-started/locally/ 找到对应的安装命令。我的环境是 ubuntu 18.04.5、pip、CUDA 11.0。
-
-    ```
-    $ pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio===0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
-    ```
-   
-7. 安装软件包
-
-    ```
-    $ pip install -r requirements.txt
-    ```
-
-8. 在 main.py 文件中第66行，设置要检测的视频文件路径，默认为 './video/test.mp4'
-
-    > 140MB的测试视频可以在这里下载：https://pan.baidu.com/s/1qHNGGpX1QD6zHyNTqWvg1w 提取码: 8ufq 
- 
-    ```
-    capture = cv2.VideoCapture('./video/test.mp4')
-    ```
-   
-9. 运行程序
-
-    ```
+    ``` bash
     python main.py
     ```
 
+4. 基於原本程式寫的檢測人物進入和離開一個區域的統計。
+    - 測試資源目前還是原本的行人影片
 
-## 使用框架
+    ``` bash
+    python ClassroomTest.py
+    ```
 
-- https://github.com/Sharpiless/Yolov5-deepsort-inference
-- https://github.com/ultralytics/yolov5/
-- https://github.com/ZQPei/deep_sort_pytorch
+## 對原版的修改記錄
+
+- 原版程式中使用了一些`np.float` 和 `np.int`此類的格式，根據error信息，這種寫法已被捨棄，可以直接使用`float` 和 `int`；或者用`np.float64` 和 `np.float32`這樣的寫法。
+- 其餘的可以參照[作者原本的說明](./README_origin.md)
